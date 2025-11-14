@@ -48,15 +48,25 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         self.spinBox_for_3.valueChanged.connect(self.validate_grading_criteria)
         self.spinBox_for_2.valueChanged.connect(self.validate_grading_criteria)
         
-        # Гарантируем, что сложение всегда выбрано и нельзя снять галочку
-        self.checkBox_addition.setChecked(True)
-        self.checkBox_addition.toggled.connect(self.force_addition_checked)
+        # Гарантируем, что хотя бы одно действие выбрано
+        self.checkBox_addition.toggled.connect(self.validate_at_least_one_operation)
+        self.checkBox_subtraction.toggled.connect(self.validate_at_least_one_operation)
+        self.checkBox_multiplication.toggled.connect(self.validate_at_least_one_operation)
+        self.checkBox_division.toggled.connect(self.validate_at_least_one_operation)
         
-    def force_addition_checked(self, checked):
-        """Гарантирует, что сложение всегда выбрано"""
-        if not checked:
-            self.checkBox_addition.setChecked(True)
-            QMessageBox.warning(self, "Предупреждение", "Сложение всегда должно быть выбрано!")
+    def validate_at_least_one_operation(self):
+        """Проверяет, что выбрано хотя бы одно действие"""
+        operations_checked = [
+            self.checkBox_addition.isChecked(),
+            self.checkBox_subtraction.isChecked(),
+            self.checkBox_multiplication.isChecked(),
+            self.checkBox_division.isChecked()
+        ]
+        
+        # Если ни одно действие не выбрано, автоматически включаем сложение
+        # if not any(operations_checked):
+        #     self.checkBox_addition.setChecked(True)
+        #     QMessageBox.warning(self, "Предупреждение", "Должно быть выбрано хотя бы одно действие! Сложение включено автоматически.")
             
     def validate_grading_criteria(self):
         """Проверяет что числа правильных не превышают число примеров и идут по убыванию"""
@@ -136,7 +146,7 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         first_digit = encoded // 10
         zeros_count = encoded % 10
         
-        # Восстанавливаем число: первая цифра * 10^zeros_count
+        # Восстанавливаем число: первая цифra * 10^zeros_count
         decoded = first_digit * (10 ** zeros_count)
         
         # Ограничиваем максимальное значение для QSpinBox
@@ -151,9 +161,8 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         mode_number = 0
         
         # Битовая маска операций (первые 8 бит)
-        # Сложение всегда включено (бит 0)
-        mode_number |= 0b00000001
-        
+        if self.checkBox_addition.isChecked():
+            mode_number |= 0b00000001
         if self.checkBox_subtraction.isChecked():
             mode_number |= 0b00000010
         if self.checkBox_multiplication.isChecked():
@@ -269,8 +278,8 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         self.spinBox_max.setValue(max_val)
         self.spinBox_examples_count.setValue(examples_count if examples_count > 0 else 10)
         
-        # Устанавливаем операции (сложение всегда включено)
-        self.checkBox_addition.setChecked(True)  # Всегда True
+        # Устанавливаем операции
+        self.checkBox_addition.setChecked(bool(mode_number & 0b00000001))
         self.checkBox_subtraction.setChecked(bool(mode_number & 0b00000010))
         self.checkBox_multiplication.setChecked(bool(mode_number & 0b00000100))
         self.checkBox_division.setChecked(bool(mode_number & 0b00001000))
@@ -327,7 +336,7 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         self.spinBox_for_2.setValue(1)
         self.on_grading_system_changed()  # Обновляем состояние спинбоксов оценки
         
-        # Сложение всегда включено и нельзя отключить
+        # Настройки операций по умолчанию
         self.checkBox_addition.setChecked(True)
         self.checkBox_subtraction.setChecked(True)
         self.checkBox_multiplication.setChecked(False)
@@ -633,7 +642,17 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         if not self.current_student_id:
             QMessageBox.warning(self, "Ошибка", "Выберите ученика")
             return
-            
+        operations_checked = [
+            self.checkBox_addition.isChecked(),
+            self.checkBox_subtraction.isChecked(),
+            self.checkBox_multiplication.isChecked(),
+            self.checkBox_division.isChecked()
+        ]
+        if not any(operations_checked):
+            self.checkBox_addition.setChecked(True)
+            QMessageBox.warning(self, "Предупреждение", "Должно быть выбрано хотя бы одно действие! Сложение включено автоматически.")
+            return
+
         extended_mode = self.calculate_extended_mode()
         number_range = self.get_number_range()
         actions_count = self.spinBox_actions.value()
@@ -675,7 +694,17 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         if not self.current_class:
             QMessageBox.warning(self, "Ошибка", "Выберите класс")
             return
-            
+        operations_checked = [
+            self.checkBox_addition.isChecked(),
+            self.checkBox_subtraction.isChecked(),
+            self.checkBox_multiplication.isChecked(),
+            self.checkBox_division.isChecked()
+        ]
+        if not any(operations_checked):
+            self.checkBox_addition.setChecked(True)
+            QMessageBox.warning(self, "Предупреждение", "Должно быть выбрано хотя бы одно действие! Сложение включено автоматически.")
+            return
+
         extended_mode = self.calculate_extended_mode()
         number_range = self.get_number_range()
         actions_count = self.spinBox_actions.value()
