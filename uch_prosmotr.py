@@ -48,6 +48,16 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         self.spinBox_for_3.valueChanged.connect(self.validate_grading_criteria)
         self.spinBox_for_2.valueChanged.connect(self.validate_grading_criteria)
         
+        # Гарантируем, что сложение всегда выбрано и нельзя снять галочку
+        self.checkBox_addition.setChecked(True)
+        self.checkBox_addition.toggled.connect(self.force_addition_checked)
+        
+    def force_addition_checked(self, checked):
+        """Гарантирует, что сложение всегда выбрано"""
+        if not checked:
+            self.checkBox_addition.setChecked(True)
+            QMessageBox.warning(self, "Предупреждение", "Сложение всегда должно быть выбрано!")
+            
     def validate_grading_criteria(self):
         """Проверяет что числа правильных не превышают число примеров и идут по убыванию"""
         examples_count = self.spinBox_examples_count.value()
@@ -141,8 +151,9 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         mode_number = 0
         
         # Битовая маска операций (первые 8 бит)
-        if self.checkBox_addition.isChecked():
-            mode_number |= 0b00000001
+        # Сложение всегда включено (бит 0)
+        mode_number |= 0b00000001
+        
         if self.checkBox_subtraction.isChecked():
             mode_number |= 0b00000010
         if self.checkBox_multiplication.isChecked():
@@ -258,8 +269,8 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         self.spinBox_max.setValue(max_val)
         self.spinBox_examples_count.setValue(examples_count if examples_count > 0 else 10)
         
-        # Устанавливаем операции
-        self.checkBox_addition.setChecked(bool(mode_number & 0b00000001))
+        # Устанавливаем операции (сложение всегда включено)
+        self.checkBox_addition.setChecked(True)  # Всегда True
         self.checkBox_subtraction.setChecked(bool(mode_number & 0b00000010))
         self.checkBox_multiplication.setChecked(bool(mode_number & 0b00000100))
         self.checkBox_division.setChecked(bool(mode_number & 0b00001000))
@@ -315,6 +326,8 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         self.spinBox_for_3.setValue(4)
         self.spinBox_for_2.setValue(1)
         self.on_grading_system_changed()  # Обновляем состояние спинбоксов оценки
+        
+        # Сложение всегда включено и нельзя отключить
         self.checkBox_addition.setChecked(True)
         self.checkBox_subtraction.setChecked(True)
         self.checkBox_multiplication.setChecked(False)
