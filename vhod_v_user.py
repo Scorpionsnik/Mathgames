@@ -114,7 +114,7 @@ class Ui_MainWindow_vhod_2(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "mathgames"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Выберите тип пользователя под которым хотите войти:</p></body></html>"))
-        self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.1"))
+        self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.36"))
         self.label_3.setText(_translate("MainWindow", "@Scorpionsnik"))
         self.pushButton_4.setText(_translate("MainWindow", "?"))
         self.pushButton_5.setText(_translate("MainWindow", "!"))

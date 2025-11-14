@@ -21,10 +21,10 @@ class uchit1(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(550, 440, 121, 16))
+        self.label_2.setGeometry(QtCore.QRect(545, 440, 121, 16))
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(560, 460, 101, 16))
+        self.label_3.setGeometry(QtCore.QRect(555, 460, 101, 16))
         self.label_3.setObjectName("label_3")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, -1, 641, 411))
@@ -130,7 +130,7 @@ class uchit1(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Учитель"))
-        self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.1"))
+        self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.36"))
         self.label_3.setText(_translate("MainWindow", "@Scorpionsnik"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Добро пожаловать, учитель!</p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Выберите действие:</p></body></html>"))

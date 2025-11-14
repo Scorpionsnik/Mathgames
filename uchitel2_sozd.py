@@ -255,7 +255,7 @@ class Uch_sozd_2(object):
         self.label_6.setStyleSheet("color: red")
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.centralwidget)
-        self.label_7.setGeometry(QtCore.QRect(360, 290, 191, 16))
+        self.label_7.setGeometry(QtCore.QRect(360, 290, 300, 16))
         self.label_7.setStyleSheet("color:red")
         self.label_7.setObjectName("label_7")
         MainWindow.setCentralWidget(self.centralwidget)

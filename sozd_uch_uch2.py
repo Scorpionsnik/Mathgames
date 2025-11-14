@@ -187,7 +187,8 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 				conn.close()
 				self.backup_database()
 		else:
-			QtWidgets.QApplication.instance().quit()
+			self.label_7.show()
+			self.label_7.setText("Выберите объект, который будете создавать")
 		self.dannie = read_uchitel_parol(self.dannie[1])
 
 	def backup_database(self):
