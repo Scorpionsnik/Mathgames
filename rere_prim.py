@@ -14,6 +14,7 @@ class proba_prohozhdeniya(QtWidgets.QMainWindow, Ui_mainwindow_1):
 		self.parent = parent
 		self.dannie = dannie
 		self.showFullScreen()
+		self.label_4.hide()
 		self.label_3.hide()
 		self.label_3.setAlignment(QtCore.Qt.AlignCenter)
 		self.pushButton_2.clicked.connect(self.exit)

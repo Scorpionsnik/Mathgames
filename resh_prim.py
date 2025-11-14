@@ -15,9 +15,6 @@ class Ui_mainwindow_1(object):
     def setupUi(self, mainwindow):
         mainwindow.setObjectName("mainwindow")
         mainwindow.resize(1920, 1080)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("Photo/IMG-20251105-1WA0016.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        mainwindow.setWindowIcon(icon)
         mainwindow.setStyleSheet("QMainWindow {\n"
 "    background: qconicalgradient(cx: 0.5, cy: 0.5, angle: 45,\n"
 "                                 stop: 0 #FFD699, stop: 0.2 #FFCC80,\n"
@@ -275,6 +272,27 @@ class Ui_mainwindow_1(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4.setGeometry(QtCore.QRect(80, 80, 611, 131))
+        self.label_4.setStyleSheet("QLabel {\n"
+"    color: #7F4F24;  /* Тот же теплый коричневый, что и у кнопки */\n"
+"    font-family: \'Segoe UI\', Arial, sans-serif;\n"
+"    font-size: 40px;\n"
+"    font-weight: normal;\n"
+"    background: transparent;  /* Прозрачный фон */\n"
+"    border: none;  /* Без границ */\n"
+"    padding: 5px 0px;\n"
+"}\n"
+"\n"
+"QLabel[important=\"true\"] {\n"
+"    font-weight: bold;\n"
+"    color: #E68900;  /* Более яркий цвет для важных надписей */\n"
+"}\n"
+"\n"
+"QLabel:disabled {\n"
+"    color: #CC9966;  /* Приглушенный цвет для неактивных надписей */\n"
+"}")
+        self.label_4.setObjectName("label_4")
         mainwindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(mainwindow)
         self.statusbar.setObjectName("statusbar")
@@ -292,3 +310,4 @@ class Ui_mainwindow_1(object):
         self.pushButton.setText(_translate("mainwindow", "Проверить"))
         self.pushButton_4.setText(_translate("mainwindow", "Следущий пример"))
         self.pushButton_2.setText(_translate("mainwindow", "ВЫХОД"))
+        self.label_4.setText(_translate("mainwindow", "Выполнено 0/0"))

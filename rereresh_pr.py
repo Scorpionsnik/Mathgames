@@ -46,6 +46,7 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 		self.correct_answers = 0
 		self.sdel_primer = 0  # Начинаем с 0
 		
+		self.label_4.setText(f"Выполнено 0/{self.examples_count}")
 		# Меняем подключение кнопки
 		self.pushButton.clicked.disconnect()
 		self.pushButton.clicked.connect(self.again)
@@ -90,6 +91,7 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 
 	def again(self):
 		"""Кнопка 'Далее' - всегда переходит к следующему примеру"""
+		self.label_4.setText(f"Выполнено {self.sdel_primer}/{self.examples_count}")
 		# Если это первый пример, просто запускаем
 		if self.sdel_primer == 0:
 			self.start()

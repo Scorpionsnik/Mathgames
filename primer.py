@@ -14,6 +14,7 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
         self.setupUi(self)
         self.parent = parent
         self.re = rezh
+        self.label_4.hide()
         self.showFullScreen()
         self.pushButton_2.clicked.connect(self.exit)
         self.pushButton.clicked.connect(self.prov_resh)
