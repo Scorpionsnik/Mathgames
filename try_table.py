@@ -30,7 +30,6 @@ def make_table_uchenik():
 	conn.close()
 
 def check_table_exists(table_name):
-	"""Проверяет существование таблицы с улучшенной обработкой ошибок"""
 	try:
 		conn = sqlite3.connect('Data/vse.db')
 		cursor = conn.cursor()
@@ -74,30 +73,21 @@ def find_id(tabl_name, id1):
 		print(str("no user with id: "+str(id1)))
 
 def validate_name(name):
-	"""
-	Проверяет корректность имени/названия класса
-	Возвращает (is_valid, error_message)
-	"""
 	if not name or not name.strip():
 		return False, "Имя не может быть пустым"
 	
-	# Проверяем, что имя не начинается с пробела
 	if name.startswith(' '):
 		return False, "Имя не может начинаться с пробела"
 	
-	# Проверяем, что имя не заканчивается на пробел
 	if name.endswith(' '):
 		return False, "Имя не может заканчиваться на пробел"
 	
-	# Проверяем, что имя не начинается с цифры
 	if name[0].isdigit():
 		return False, "Имя не может начинаться с цифры"
-	
-	# Проверяем на наличие только допустимых символов
+
 	if not all(c.isalnum() or c.isspace() or c in '-_.' for c in name):
 		return False, "Имя содержит недопустимые символы"
-	
-	# Проверяем длину имени
+
 	if len(name) < 2:
 		return False, "Имя должно содержать минимум 2 символа"
 	
@@ -107,17 +97,12 @@ def validate_name(name):
 	return True, ""
 
 def validate_class_name(class_name):
-	"""
-	Проверяет корректность названия класса
-	Возвращает (is_valid, error_message)
-	"""
-	# Используем ту же логику, что и для имени
+
 	is_valid, error_message = validate_name(class_name)
 	
 	if not is_valid:
 		return False, error_message
-	
-	# Дополнительные проверки для названия класса
+
 	if len(class_name) < 2:
 		return False, "Название класса должно содержать минимум 2 символа"
 	
@@ -127,27 +112,21 @@ def validate_class_name(class_name):
 	return True, ""
 
 def get_all_classes():
-	"""Получить список всех классов (таблиц) кроме системных"""
 	conn = sqlite3.connect('Data/vse.db')
 	cursor = conn.cursor()
-	
-	# Получаем все таблицы в БД
 	cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
 	tables = cursor.fetchall()
 	
 	conn.close()
-	
-	# Системные таблицы которые нужно исключить
+
 	system_tables = ['admin', 'uchitelya', 'ucheniki', 'sqlite_sequence']
-	
-	# Фильтруем таблицы
+
 	classes = [table[0] for table in tables if table[0] not in system_tables]
 	
 	return classes
 
 def add_uchenik(name1, parol1, rezh1):
-	"""Добавляет ученика с проверкой имени"""
-	# ПРОВЕРКА ИМЕНИ
+
 	is_valid, error_message = validate_name(name1)
 	if not is_valid:
 		print(f"Ошибка: {error_message}")
@@ -179,22 +158,13 @@ def inp_dannie_uchenika():
 	add_uchenik(name, nikname, ocenka, 1)
 
 def add_ocenka_auto_secure(class_name, id_uchenika, ocenka):
-	"""
-	Безопасная версия функции для добавления оценки после последней существующей
-	с проверкой всех входных параметров
-	"""
 	try:
-		# Проверяем оценку
 		if not (1 <= ocenka <= 5):
 			print("Оценка должна быть от 1 до 5")
 			return None
-		
-		# Проверяем существование таблицы
 		if not check_table_exists(class_name):
 			print(f"Класс {class_name} не существует")
 			return None
-		
-		# Проверяем существование ученика
 		student_data = find_id('ucheniki', id_uchenika)
 		if not student_data:
 			print(f"Ученик с id {id_uchenika} не найден")
@@ -202,57 +172,49 @@ def add_ocenka_auto_secure(class_name, id_uchenika, ocenka):
 		
 		conn = sqlite3.connect('Data/vse.db')
 		cursor = conn.cursor()
-		
-		# Проверяем, что ученик есть в классе
+
 		cursor.execute(f"SELECT * FROM {class_name} WHERE id_uchenika = ?", (id_uchenika,))
 		if not cursor.fetchone():
 			print(f"Ученик с id {id_uchenika} не найден в классе {class_name}")
 			conn.close()
 			return None
-		
-		# Получаем структуру таблицы
+
 		cursor.execute(f"PRAGMA table_info({class_name})")
 		columns = cursor.fetchall()
-		
-		# Находим колонки с оценками
+
 		grade_columns = [col[1] for col in columns if col[1].startswith('ocenka')]
-		grade_columns.sort(key=lambda x: int(x[6:]))  # Сортируем по номеру
-		
-		# Находим первую пустую оценку
-		nomer_ocenki = len(grade_columns)  # По умолчанию - новая колонка
+		grade_columns.sort(key=lambda x: int(x[6:]))
+
+		nomer_ocenki = len(grade_columns)
 		
 		if grade_columns:
-			# Получаем текущие оценки ученика
 			select_columns = ', '.join(grade_columns)
 			cursor.execute(f"SELECT {select_columns} FROM {class_name} WHERE id_uchenika = ?", (id_uchenika,))
 			student_grades = cursor.fetchone()
-			
-			# Ищем первую пустую оценку
 			for i, grade in enumerate(student_grades):
 				if grade is None:
 					nomer_ocenki = i
 					break
-		
-		# Если нужно создать новую колонку
+
 		if nomer_ocenki == len(grade_columns):
 			new_column = f"ocenka{nomer_ocenki}"
 			cursor.execute(f"ALTER TABLE {class_name} ADD COLUMN {new_column} INTEGER")
 		
-		# Добавляем оценку
+
 		column_name = f"ocenka{nomer_ocenki}"
 		cursor.execute(f"UPDATE {class_name} SET {column_name} = ? WHERE id_uchenika = ?", (ocenka, id_uchenika))
 		
 		conn.commit()
 		conn.close()
 		
-		print(f"✅ Оценка {ocenka} добавлена ученику '{student_data[1]}' в колонку {column_name}")
+		print(f" Оценка {ocenka} добавлена ученику '{student_data[1]}' в колонку {column_name}")
 		return nomer_ocenki
 		
 	except sqlite3.Error as e:
-		print(f"❌ Ошибка базы данных: {e}")
+		print(f" Ошибка базы данных: {e}")
 		return None
 	except Exception as e:
-		print(f"❌ Общая ошибка: {e}")
+		print(f" Общая ошибка: {e}")
 		return None
 
 def vibor_id():
@@ -279,8 +241,7 @@ def add_uchenik_to_class():
 		conn.close()
 		return
 	print(str("we find user : " + str(user)))
-	
-	# ПРАВИЛЬНАЯ РАСПАКОВКА - 8 полей
+
 	user_id, user_name, user_parol, user_nikname, user_ocenka, user_rezh, user_max_number, user_grading_criteria = user
 	
 	class_name = input("enter class name: ")
@@ -306,7 +267,6 @@ def add_ocenka(class_name, id_uchenika, ocenka, nomer_ocenki):
 		for i in range((num_columns - 3), nomer_ocenki + 1):
 			ocenka_column = str("ocenka" + str(i))
 			cursor.execute(f"ALTER TABLE {class_name} ADD COLUMN {ocenka_column} INTEGER")
-	# cursor.execute(f"ALTER TABLE {class_name} ADD COLUMN {ocenka_column} INTEGER")
 	ocenka_column_name = f"ocenka{nomer_ocenki}"
 	cursor.execute(f"UPDATE {class_name} SET {ocenka_column_name} = ? WHERE id_uchenika = ?", (ocenka, id_uchenika))
 	print(f"ocenka {ocenka} dobavlena ucheniku s id {id_uchenika}")
@@ -427,37 +387,24 @@ def dannie_dlya_dobavl_ocenki():
 	add_ocenka(class_uchenika, id_uchenika, ocenka, num_ocenki)
 
 def get_student_grades(student_name):
-	"""
-	Получает все оценки ученика по всем классам
-	Возвращает массив оценок или пустой массив если ученик не найден
-	"""
 	try:
 		conn = sqlite3.connect('Data/vse.db')
 		cursor = conn.cursor()
-		
-		# Находим класс ученика
+
 		class_name = find_student_in_classes(student_name)
 		if not class_name:
 			conn.close()
 			return []
-		
-		# Получаем все колонки таблицы класса
+
 		cursor.execute(f"PRAGMA table_info({class_name})")
 		columns = cursor.fetchall()
-		
-		# Фильтруем только колонки с оценками (начинаются с 'ocenka')
+
 		grade_columns = [col[1] for col in columns if col[1].startswith('ocenka')]
-		
-		# Получаем все оценки ученика
 		cursor.execute(f"SELECT {', '.join(grade_columns)} FROM {class_name} WHERE name = ?", (student_name,))
 		student_row = cursor.fetchone()
-		
 		conn.close()
-		
 		if not student_row:
 			return []
-		
-		# Фильтруем None значения и возвращаем только существующие оценки
 		grades = [grade for grade in student_row if grade is not None]
 		return grades
 		
@@ -469,21 +416,13 @@ def get_student_grades(student_name):
 		return []
 
 def get_student_statistics(student_name):
-	"""
-	Получает статистику ученика: место в классе, процент лучше других, успеваемость
-	Возвращает словарь с статистикой или None если ученик не найден
-	"""
 	try:
 		conn = sqlite3.connect('Data/vse.db')
 		cursor = conn.cursor()
-		
-		# Находим класс ученика
 		class_name = find_student_in_classes(student_name)
 		if not class_name:
 			conn.close()
 			return None
-		
-		# Получаем всех учеников класса
 		cursor.execute(f"SELECT name FROM {class_name}")
 		all_students = cursor.fetchall()
 		total_students = len(all_students)
@@ -491,24 +430,19 @@ def get_student_statistics(student_name):
 		if total_students == 0:
 			conn.close()
 			return None
-		
-		# Получаем средние баллы всех учеников
 		student_averages = []
 		
 		for student in all_students:
 			student_name_current = student[0]
 			grades = get_student_grades(student_name_current)
 			
-			if grades:  # Если есть оценки
+			if grades:
 				average = sum(grades) / len(grades)
 				student_averages.append((student_name_current, average))
 			else:
 				student_averages.append((student_name_current, 0))
-		
-		# Сортируем по убыванию среднего балла
+
 		student_averages.sort(key=lambda x: x[1], reverse=True)
-		
-		# Находим место текущего ученика
 		place = None
 		for i, (name, avg) in enumerate(student_averages, 1):
 			if name == student_name:
@@ -518,17 +452,12 @@ def get_student_statistics(student_name):
 		if place is None:
 			conn.close()
 			return None
-		
-		# ПРАВИЛЬНЫЙ РАСЧЕТ ПРОЦЕНТА: 
-		# (количество учеников ХУЖЕ тебя) / (общее количество - 1) * 100
-		# -1 потому что исключаем самого ученика из сравнения
 		if total_students > 1:
 			students_worse_than_you = total_students - place
 			better_than_percent = (students_worse_than_you / (total_students - 1)) * 100
 		else:
-			better_than_percent = 100  # Если в классе только один ученик
-		
-		# Рассчитываем успеваемость текущего ученика (процент 4 и 5)
+			better_than_percent = 100
+
 		current_student_grades = get_student_grades(student_name)
 		if current_student_grades:
 			good_grades = [grade for grade in current_student_grades if grade >= 4]
@@ -585,7 +514,6 @@ def opred_rezh(rezhim):
 		print("Invalid choice")
 
 def check_database_exists(db_name):
-	"""Проверяет существует ли файл базы данных"""
 	return os.path.exists(db_name)
 
 def read_user_parol(table):
@@ -611,7 +539,6 @@ def read_uchitel_parol(name):
 	if not uchitel_data:
 		print("error: ne mogu opredelit parol uchitelya")
 		return None
-		# mamain_menu()
 	else:
 		return uchitel_data
 
@@ -624,7 +551,6 @@ def read_uchenik_parol(name):
 	if not uchitel_data:
 		return None
 		print("error: ne mogu opredelit parol ucheniki")
-		# mamain_menu()
 	else:
 		return uchitel_data
 
@@ -640,8 +566,6 @@ def sozd_admin_table(parol):
 	conn.close()
 
 def add_uchitel(name1, parol1):
-	"""Добавляет учителя с проверкой имени"""
-	# ПРОВЕРКА ИМЕНИ
 	is_valid, error_message = validate_name(name1)
 	if not is_valid:
 		print(f"Ошибка: {error_message}")
@@ -655,43 +579,30 @@ def add_uchitel(name1, parol1):
 	return True
 
 def validate_name(name):
-	"""
-	Проверяет корректность имени/названия класса
-	Возвращает (is_valid, error_message)
-	"""
 	if not name or not name.strip():
 		return False, "Имя не может быть пустым"
-	
-	# Проверяем, что имя не начинается с пробела
+
 	if name.startswith(' '):
 		return False, "Имя не может начинаться с пробела"
-	
-	# Проверяем, что имя не заканчивается на пробел
+
 	if name.endswith(' '):
 		return False, "Имя не может заканчиваться на пробел"
-	
-	# Проверяем, что имя не начинается с цифры
+
 	if name[0].isdigit():
 		return False, "Имя не может начинаться с цифры"
-	
-	# Проверяем на наличие только допустимых символов
+
 	if not all(c.isalnum() or c.isspace() or c in '-_.' for c in name):
 		return False, "Имя содержит недопустимые символы"
 	
 	return True, ""
 
 def validate_class_name(class_name):
-	"""
-	Проверяет корректность названия класса
-	Возвращает (is_valid, error_message)
-	"""
-	# Используем ту же логику, что и для имени
+
 	is_valid, error_message = validate_name(class_name)
 	
 	if not is_valid:
 		return False, error_message
-	
-	# Дополнительные проверки для названия класса
+
 	if len(class_name) < 2:
 		return False, "Название класса должно содержать минимум 2 символа"
 	
@@ -701,9 +612,6 @@ def validate_class_name(class_name):
 	return True, ""
 
 def update_table_value(table_name, column_name, new_value, id_uchenika):
-	"""
-	Изменяет одно значение в таблице для конкретного ученика
-	"""
 	conn = sqlite3.connect('Data/vse.db')
 	cursor = conn.cursor()
 	
@@ -718,7 +626,6 @@ def update_table_value(table_name, column_name, new_value, id_uchenika):
 		conn.close()
 
 def update_uchitel_class_count(uchitel_name, new_count):
-	"""Обновляет количество классов у учителя"""
 	conn = sqlite3.connect('Data/vse.db')
 	cursor = conn.cursor()
 	
@@ -733,7 +640,6 @@ def update_uchitel_class_count(uchitel_name, new_count):
 		conn.close()
 
 def delete_by_name(table_name, name_value):
-	"""Удалить строку по имени"""
 	conn = sqlite3.connect('Data/vse.db')
 	cursor = conn.cursor()
 	cursor.execute(f"DELETE FROM {table_name} WHERE name = ?", (name_value,))
@@ -850,18 +756,13 @@ def vhod_uchitel():
 			if check_table_exists(new_class_name):
 				print("takoi class yzhe est")
 				return
-			
-			# Получаем текущие данные учителя
 			current_count = uchitel_parol[3] if uchitel_parol[3] is not None else 0
 			new_count = current_count + 1
-			
-			# Создаем таблицу класса
+
 			make_table_class(new_class_name)
-			
-			# Обновляем количество классов у учителя
-			update_uchitel_class_count(uchitel, new_count)  # используем переменную uchitel вместо uchitel_name
-			
-			# Если это первый класс, сохраняем его название в class0
+
+			update_uchitel_class_count(uchitel, new_count) 
+
 			if new_count == 1:
 				conn = sqlite3.connect('Data/vse.db')
 				cursor = conn.cursor()
@@ -990,7 +891,6 @@ def opred_vhoda(rezhim):
 				return
 		elif rezhim == 3:
 			vhod_uchenik()
-			# if check_table_exists('ucheniki'):
 		else:
 			print("invalid number")
 			return
@@ -1013,5 +913,3 @@ def mamain_menu():
 		opred_vhoda(vibor_usera)
 	except:
 		print("ne chislo")
-
-# mamain_menu()

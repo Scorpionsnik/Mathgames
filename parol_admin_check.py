@@ -10,11 +10,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
 class Vh_Adm(QtWidgets.QMainWindow, Vhod_Admin):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, parent = None):
+		super().__init__(parent)
 		self.setupUi(self)
 		self.label_4.hide()
-		self.pushButton_2.clicked.connect(self.go_back)
+		self.pushButton_2.clicked.connect(lambda: self.go_back(parent))
 		self.pushButton.clicked.connect(self.prov_parol)
 		self.setWindowFlags(QtCore.Qt.Window)
 
@@ -53,8 +53,10 @@ class Vh_Adm(QtWidgets.QMainWindow, Vhod_Admin):
 			self.label_4.setText("Неверный пароль")
 			self.label_4.show()
 
-	def go_back(self):
-		QtWidgets.QApplication.instance().quit()
+	def go_back(self, parent):
+		self.close()
+		parent.close()
+		# QtWidgets.QApplication.instance().quit()
 
 	def closeEvent(self, event):
 		event.accept()

@@ -10,11 +10,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets ,uic
 class main():
 	def __init__(self):
 		super().__init__()
+		# print(os.getcwd())
+		# print("123")
 		self.find_zagr_file()
+		
 		if self.state == 0:
 			self.run_gui()
 		else:
 			self.run_main_app()
+		
 
 	def run_main_app(self):
 		app = QtWidgets.QApplication(sys.argv)
@@ -24,15 +28,16 @@ class main():
 
 	def run_gui(self):
 		app = QtWidgets.QApplication(sys.argv)
-		window = Hallo_class_class()
+		main_window = vhod_multi()
+		window = Hallo_class_class(main_window)
 		window.show()
 		app.exec_()  
-		self.run_main_app()      
+		# self.run_main_app()      
 
 	def find_zagr_file(self):
 		filename='start.ini'
 		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
-		path = os.path.join(os.path.join(dir_path,'Data'),filename)#<-объединятет путь к директории запуска и имя файла
+		path = os.path.join(os.path.join(dir_path, 'Data'),filename)#<-объединятет путь к директории запуска и имя файла
 		if os.path.isfile(path):#<-проверка на существование файла
 			fileini=open(path,"r")#<-открытие файла на чтение
 
@@ -57,14 +62,14 @@ class main():
 
 	def make_ini_start_file(self):
 		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
-		folder_path = os.path.join(dir_path,'Data')
+		folder_path = os.path.join(dir_path, 'Data')
 		if not os.path.exists(folder_path):
 			os.makedirs(folder_path)
 			print(f"Папка '{folder_path}' создана")
 		else:
 			print(f"Папка '{folder_path}' уже существует")
 		filenameout='start.ini'
-		fout=open(os.path.join(os.path.join(dir_path,'Data'),filenameout),"w")
+		fout=open(os.path.join(os.path.join(dir_path, 'Data'),filenameout),"w")
 		fout.write('0')
 		fout.close
 		self.state = 0

@@ -116,7 +116,7 @@ class start_win(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(10, 9, 1901, 111))
+        self.label.setGeometry(QtCore.QRect(10, 9, 1901, 211))
         font = QtGui.QFont()
         font.setPointSize(72)
         font.setBold(False)
@@ -125,7 +125,7 @@ class start_win(object):
         self.label.setStyleSheet("color : #D00000")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(10, 170, 1901, 381))
+        self.label_2.setGeometry(QtCore.QRect(30, 250, 1901, 300))
         font = QtGui.QFont()
         font.setPointSize(24)
         self.label_2.setFont(font)
@@ -183,7 +183,7 @@ class start_win(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Добро пожаловать!"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Начать прохождение?</p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Предупреждаем: задание на оценку, </p><p align=\"center\">выполняйте его аккуратно, если не хотите сразу приступать, </p><p align=\"center\">можно потренироваться в пробном режиме, </p><p align=\"center\">но если не пройти обычный режим, можно получить &quot;2&quot;</p></body></html>"))
         self.pushButton_2.setText(_translate("MainWindow", "Начать прохождение"))

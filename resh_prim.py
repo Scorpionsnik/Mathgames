@@ -148,6 +148,7 @@ class Ui_mainwindow_1(object):
         self.verticalLayout_3.setContentsMargins(75, 50, 0, 50)
         self.verticalLayout_3.setSpacing(30)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+        
         self.label_3 = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.label_3.setMinimumSize(QtCore.QSize(0, 0))
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 35))
@@ -165,6 +166,17 @@ class Ui_mainwindow_1(object):
 "}")
         self.label_3.setObjectName("label_3")
         self.verticalLayout_3.addWidget(self.label_3)
+        self.label_4 = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.label_4.setStyleSheet("QLabel {\n"
+"    background-color: transparent;\n"
+"    color: #e74c3c;\n"
+"    font-size: 16px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"}")
+        self.label_4.setWordWrap(True)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_3.addWidget(self.label_4)
         self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.pushButton.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -193,6 +205,36 @@ class Ui_mainwindow_1(object):
 "                                      stop: 0 #E68900, stop: 1 #FF9900);\n"
 "    padding: 22px 28px 18px 32px; /* Скорректированный эффект нажатия */\n"
 "}")
+
+
+
+
+
+
+
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setGeometry(QtCore.QRect(10, 9, 1901, 211))
+        font = QtGui.QFont()
+        font.setPointSize(72)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("QLabel {\n"
+"    background-color: transparent;\n"
+"    color: #e74c3c;\n"
+"    font-size: 50px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"}")
+        self.label_5.setObjectName("label_5")
+        
+
+
+
+
+
+
+
         self.pushButton.setObjectName("pushButton")
         self.verticalLayout_3.addWidget(self.pushButton)
         self.pushButton_4 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -272,27 +314,6 @@ class Ui_mainwindow_1(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(80, 80, 611, 131))
-        self.label_4.setStyleSheet("QLabel {\n"
-"    color: #7F4F24;  /* Тот же теплый коричневый, что и у кнопки */\n"
-"    font-family: \'Segoe UI\', Arial, sans-serif;\n"
-"    font-size: 40px;\n"
-"    font-weight: normal;\n"
-"    background: transparent;  /* Прозрачный фон */\n"
-"    border: none;  /* Без границ */\n"
-"    padding: 5px 0px;\n"
-"}\n"
-"\n"
-"QLabel[important=\"true\"] {\n"
-"    font-weight: bold;\n"
-"    color: #E68900;  /* Более яркий цвет для важных надписей */\n"
-"}\n"
-"\n"
-"QLabel:disabled {\n"
-"    color: #CC9966;  /* Приглушенный цвет для неактивных надписей */\n"
-"}")
-        self.label_4.setObjectName("label_4")
         mainwindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(mainwindow)
         self.statusbar.setObjectName("statusbar")
@@ -307,7 +328,8 @@ class Ui_mainwindow_1(object):
         self.label.setText(_translate("mainwindow", "TextLabel"))
         self.label_2.setText(_translate("mainwindow", "Твой ответ:"))
         self.label_3.setText(_translate("mainwindow", "<html><head/><body><p align=\"center\">ВЕРНО!</p></body></html>"))
+        self.label_4.setText(_translate("mainwindow", "Оценка: 5"))
+        self.label_5.setText(_translate("mainwindow", "Оценка: 5"))
         self.pushButton.setText(_translate("mainwindow", "Проверить"))
         self.pushButton_4.setText(_translate("mainwindow", "Следущий пример"))
         self.pushButton_2.setText(_translate("mainwindow", "ВЫХОД"))
-        self.label_4.setText(_translate("mainwindow", "Выполнено 0/0"))

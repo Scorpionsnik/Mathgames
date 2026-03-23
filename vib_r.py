@@ -79,7 +79,7 @@ class viberr_rezhh(QtWidgets.QMainWindow, Ui_MainWindow):
         extended_mode = self.create_extended_config(params)
         
         # Тестируем генерацию уравнения (опционально)
-        self.test_equation_generation(extended_mode)
+        # self.test_equation_generation(extended_mode)
         
         self.window1 = primer(extended_mode, parent=self)
         self.window1.show()

@@ -4,7 +4,6 @@ import sqlite3
 import shutil
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-# Импортируем сгенерированный UI файл
 from admin_panel import admin_panel
 
 class AdminWindow(QtWidgets.QMainWindow, admin_panel):
@@ -13,7 +12,6 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 		self.setupUi(self)
 		self.parent_window = parent
 		
-		# Подключаем кнопки
 		self.pushButton_sozd_uchitel.clicked.connect(self.sozdanie_uchitelya)
 		self.pushButton_udalit_uchitel.clicked.connect(self.udalenie_uchitelya)
 		self.pushButton_sozd_uchenik.clicked.connect(self.sozdanie_uchenika)
@@ -23,14 +21,11 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 		self.pushButton_backup_custom.clicked.connect(self.sozdanie_backup_custom)
 		self.pushButton_exit.clicked.connect(self.exit)
 		
-		# Загружаем список классов при инициализации
 		self.load_all_classes()
 		
-		# Устанавливаем флаги для независимого окна
 		self.setWindowFlags(QtCore.Qt.Window)
 		
 	def load_all_classes(self):
-		"""Загружает все существующие классы из базы данных"""
 		try:
 			conn = sqlite3.connect('Data/vse.db')
 			cursor = conn.cursor()
@@ -43,7 +38,7 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 			classes = []
 			for table in tables:
 				table_name = table[0]
-				if (table_name not in ['uchitelya', 'ucheniki', 'sqlite_sequence'] and 
+				if (table_name not in ['uchitelya', 'ucheniki', 'sqlite_sequence', 'admin'] and 
 					not table_name.startswith('sqlite_')):
 					classes.append(table_name)
 			
@@ -85,8 +80,8 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 			return False, "Имя содержит недопустимые символы"
 		
 		# Проверяем длину имени
-		if len(name) < 2:
-			return False, "Имя должно содержать минимум 2 символа"
+		# if len(name) < 2:
+		# 	return False, "Имя должно содержать минимум 2 символа"
 		
 		if len(name) > 50:
 			return False, "Имя не может превышать 50 символов"
@@ -105,8 +100,8 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 			return False, error_message
 		
 		# Дополнительные проверки для названия класса
-		if len(class_name) < 2:
-			return False, "Название класса должно содержать минимум 2 символа"
+		# if len(class_name) < 2:
+		# 	return False, "Название класса должно содержать минимум 2 символа"
 		
 		if len(class_name) > 50:
 			return False, "Название класса не может превышать 50 символов"

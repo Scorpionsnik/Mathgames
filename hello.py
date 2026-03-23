@@ -138,9 +138,9 @@ class Hallo_class(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Добро пожаловать!"))
         self.label_3.setText(_translate("MainWindow", "@Scorpionsnik"))
-        self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.1"))
+        self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.36"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600; font-style:italic;\">Добро пожаловат в Mathgames!</span></p></body></html>"))
         self.pushButton_2.setText(_translate("MainWindow", "ВЫХОД"))
         self.pushButton.setText(_translate("MainWindow", "Начать работу"))

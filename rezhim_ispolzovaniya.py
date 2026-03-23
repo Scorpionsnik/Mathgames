@@ -24,7 +24,7 @@ class opr_mod():
 	def read_mode(self):
 		filename='rezh_comp.ini'
 		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
-		path = os.path.join(os.path.join(dir_path,'Data'),filename)#<-объединятет путь к директории запуска и имя файла
+		path = os.path.join(os.path.join(dir_path, 'Data'),filename)#<-объединятет путь к директории запуска и имя файла
 		if os.path.isfile(path):#<-проверка на существование файла
 			fileini=open(path,"r")#<-открытие файла на чтение
 

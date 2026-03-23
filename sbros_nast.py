@@ -3,6 +3,7 @@ import os
 import shutil
 
 from try_table import *
+# from zag4 import zag4
 from PyQt5 import QtCore, QtGui, QtWidgets
 from vhod_admin import Vhod_Admin
 
@@ -15,6 +16,9 @@ class Sbros_n(QtWidgets.QMainWindow, Vhod_Admin):
 		self.parent_window = parent
 		self.pushButton.clicked.connect(self.prov)
 		self.pushButton_2.clicked.connect(lambda: self.exit(parent))
+		# a = zag4(parent = self)
+		# a.show()
+		# self.hide()
 
 	def prov(self):
 		conn = sqlite3.connect('Data/vse.db')

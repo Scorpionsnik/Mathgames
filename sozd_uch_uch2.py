@@ -1,7 +1,7 @@
 import sys
 import os
 import sqlite3
-import shutil  # ДОБАВЛЕНО: импорт shutil
+import shutil 
 
 from try_table import *
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -30,32 +30,23 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 		if ch == 0:
 			self.comboBox.addItem("None")
 		else:
-			# ИСПРАВЛЕНО: правильный диапазон для классов
 			for i in range(4, len(self.dannie)):
-				if self.dannie[i] is not None:  # Проверяем что значение не None
+				if self.dannie[i] is not None:
 					self.comboBox.addItem(str(self.dannie[i]))
 
-	def validate_name(self, name):
-		"""
-		Проверяет корректность имени/названия класса
-		Возвращает (is_valid, error_message)
-		"""
+	def validate_uc_name(self, name):
 		if not name or not name.strip():
 			return False, "Имя не может быть пустым"
 		
-		# Проверяем, что имя не начинается с пробела
 		if name.startswith(' '):
 			return False, "Имя не может начинаться с пробела"
 		
-		# Проверяем, что имя не заканчивается на пробел
 		if name.endswith(' '):
 			return False, "Имя не может заканчиваться на пробел"
 		
-		# Проверяем, что имя не начинается с цифры
 		if name[0].isdigit():
 			return False, "Имя не может начинаться с цифры"
 		
-		# Проверяем на наличие только допустимых символов
 		if not all(c.isalnum() or c.isspace() or c in '-_.' for c in name):
 			return False, "Имя содержит недопустимые символы"
 		
@@ -64,23 +55,29 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 		
 		return True, ""
 
-	def validate_class_name(self, class_name):
-		"""
-		Проверяет корректность названия класса
-		Возвращает (is_valid, error_message)
-		"""
-		# Используем ту же логику, что и для имени
-		is_valid, error_message = self.validate_name(class_name)
+	def validate_class_name(self, name):
+
+		for i in name:
+			if i == ' ':
+				return False, "Имя не может иметь пробел"
 		
-		if not is_valid:
-			return False, error_message
+		if not name or not name.strip():
+			return False, "Имя не может быть пустым"
 		
-		# Дополнительные проверки для названия класса
-		if len(class_name) < 2:
-			return False, "Название класса должно содержать минимум 2 символа"
+		if name.startswith(' '):
+			return False, "Имя не может начинаться с пробела"
 		
-		if len(class_name) > 50:
-			return False, "Название класса не может превышать 50 символов"
+		if name.endswith(' '):
+			return False, "Имя не может заканчиваться на пробел"
+		
+		if name[0].isdigit():
+			return False, "Имя не может начинаться с цифры"
+		
+		if not all(c.isalnum() or c.isspace() or c in '-_.' for c in name):
+			return False, "Имя содержит недопустимые символы"
+		
+		if len(name) > 50:
+			return False, "Имя не может превышать 50 символов"
 		
 		return True, ""
 
@@ -88,13 +85,11 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 		if self.radioButton_2.isChecked():
 			class_name = self.lineEdit_2.text().strip()
 			
-			# Правильная проверка на пустоту
 			if not class_name:
 				self.label_7.show()
 				self.label_7.setText("Введите название класса")
 				return
 				
-			# ПРОВЕРКА КОРРЕКТНОСТИ ИМЕНИ КЛАССА
 			is_valid, error_message = self.validate_class_name(class_name)
 			if not is_valid:
 				self.label_7.show()
@@ -116,7 +111,6 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 				cursor = conn.cursor()
 				
 				if new_count == 1:
-					# Исправлено: используем self.dannie[1] вместо uchitel
 					cursor.execute("UPDATE uchitelya SET class0 = ? WHERE name = ?", 
 								(class_name, self.dannie[1]))
 				else:
@@ -146,8 +140,7 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 				self.label_7.setText("Введите Nik ученика")
 				return
 			
-			# ПРОВЕРКА КОРРЕКТНОСТИ ИМЕНИ УЧЕНИКА
-			is_valid, error_message = self.validate_name(name_uch)
+			is_valid, error_message = self.validate_uc_name(name_uch)
 			if not is_valid:
 				self.label_7.show()
 				self.label_7.setText(error_message)
@@ -176,8 +169,7 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 				user = find_by_name('ucheniki', name_uch)
 				conn = sqlite3.connect('Data/vse.db')
 				cursor = conn.cursor() 
-				
-				# ИСПРАВЛЕННАЯ РАСПАКОВКА - 8 полей
+
 				user_id, user_name, user_parol, user_nikname, user_ocenka, user_rezh, user_max_number, user_grading_criteria = user
 				
 				cursor.execute(f"INSERT INTO {clas_s} (id_v_classe, id_uchenika, name, ocenka0) VALUES (NULL, ?, ?, ?)", 
@@ -192,16 +184,13 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 		self.dannie = read_uchitel_parol(self.dannie[1])
 
 	def backup_database(self):
-		"""Создает резервную копию базы данных"""
 		try:
 			current_dir = os.path.dirname(os.path.realpath(__file__))
 			source_path = os.path.join(os.path.join(current_dir, 'Data'), 'vse.db')
 			backup_path = os.path.join(os.path.join(current_dir, 'SourceBackup'), 'vse.db')
 			
-			# Создаем папку если нет
 			os.makedirs(os.path.dirname(backup_path), exist_ok=True)
 			
-			# Копируем файл
 			shutil.copy2(source_path, backup_path)
 			print("Резервная копия базы данных создана")
 			

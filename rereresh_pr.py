@@ -13,6 +13,7 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 	def __init__(self, dannie, parent=None):
 		super().__init__(parent)
 		self.setupUi(self)
+		self.label_4.hide()
 		self.parent = parent
 		self.dannie = dannie
 		self.showFullScreen()
@@ -33,26 +34,41 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 		# Получаем информацию об оценках
 		examples_count, grading_array = self.get_grading_info(extended_mode, grading_criteria, max_number)
 		
-		print(f"Всего примеров: {examples_count}")
-		print(f"Максимальное число: {max_number}")
-		print(f"Критерии оценивания: {grading_criteria}")
-		print(f"Для оценки 5 нужно: {grading_array[0]} правильных")
-		print(f"Для оценки 4 нужно: {grading_array[1]} правильных") 
-		print(f"Для оценки 3 нужно: {grading_array[2]} правильных")
-		print(f"Для оценки 2 нужно: {grading_array[3]} правильных")
+		# print(f"Всего примеров: {examples_count}")
+		# print(f"Максимальное число: {max_number}")
+		# print(f"Критерии оценивания: {grading_criteria}")
+		# print(f"Для оценки 5 нужно: {grading_array[0]} правильных")
+		# print(f"Для оценки 4 нужно: {grading_array[1]} правильных") 
+		# print(f"Для оценки 3 нужно: {grading_array[2]} правильных")
+		# print(f"Для оценки 2 нужно: {grading_array[3]} правильных")
 		
 		self.examples_count = examples_count
 		self.max_number = max_number
 		self.correct_answers = 0
 		self.sdel_primer = 0  # Начинаем с 0
 		
-		self.label_4.setText(f"Выполнено 0/{self.examples_count}")
+		self.label_5.setText(f"Выполнено 0/{self.examples_count}")
 		# Меняем подключение кнопки
 		self.pushButton.clicked.disconnect()
 		self.pushButton.clicked.connect(self.again)
 		
 		# Запускаем первый пример
 		self.again()  # Теперь again() сам разберется
+
+	def show_message_1(self, text, color):
+		"""Универсальная функция для показа сообщений"""
+		self.label_4.show()
+		self.label_4.setText(text)
+		self.label_4.setStyleSheet(f"""
+			QLabel {{
+				background-color: transparent;
+				color: {color};
+				font-size: 25px;
+				font-weight: bold;
+				border: none;
+				text-align: center;
+			}}
+		""")
 
 	def show_message(self, text, color):
 		"""Универсальная функция для показа сообщений"""
@@ -91,7 +107,7 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 
 	def again(self):
 		"""Кнопка 'Далее' - всегда переходит к следующему примеру"""
-		self.label_4.setText(f"Выполнено {self.sdel_primer}/{self.examples_count}")
+		self.label_5.setText(f"Выполнено {self.sdel_primer}/{self.examples_count}")
 		# Если это первый пример, просто запускаем
 		if self.sdel_primer == 0:
 			self.start()
@@ -121,8 +137,17 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 		
 		examples_count, grading_array = self.get_grading_info(extended_mode, grading_criteria, max_number)
 		final_grade = self.calculate_grade(self.correct_answers, grading_array)
-		self.label_3.setText(f"Оценка: {final_grade}")
+
+		if final_grade == 5 or final_grade == 4:
+			col = '#2ecc71'
+		if final_grade == 3:
+			col = '#f75c00'
+		if final_grade == 2:
+			col = '#e74c3c'
+		self.show_message_1(f"Оценка: {final_grade}", f'{col}')
+
 		print(f"Оценка: {final_grade}")
+
 		nomer = add_ocenka_auto_secure(find_student_in_classes(self.dannie[1]), self.dannie[0], final_grade)
 		if nomer is not None:
 			print(f"Оценка добавлена под номером {nomer}")

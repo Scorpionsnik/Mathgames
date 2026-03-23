@@ -14,7 +14,7 @@ class Vhod_v_uchenika(QtWidgets.QMainWindow, Vh_uuuuuuch):
 		self.setupUi(self)
 		self.parent_window = parent
 		self.label_4.hide()
-		self.pushButton_2.clicked.connect(self.on_back)
+		self.pushButton_2.clicked.connect(lambda: self.on_back(parent))
 		self.pushButton.clicked.connect(self.prov_parol)
 		self.setWindowFlags(QtCore.Qt.Window)
 		self.uuuchenik_window = None
@@ -42,8 +42,10 @@ class Vhod_v_uchenika(QtWidgets.QMainWindow, Vh_uuuuuuch):
 				self.lineEdit.clear()
 				self.lineEdit_2.clear()
 
-	def on_back(self):
-		QtWidgets.QApplication.instance().quit()
+	def on_back(self, parent):
+		self.close()
+		parent.close()
+		# QtWidgets.QApplication.instance().quit()
 
 	def close_child_window(self):
 		if hasattr(self, 'a') and self.a:
@@ -54,4 +56,5 @@ class Vhod_v_uchenika(QtWidgets.QMainWindow, Vh_uuuuuuch):
 	def closeEvent(self, event):
 		if self.uuuchenik_window:
 			self.uuuchenik_window.close()
+		self.parent_window.close()
 		event.accept()

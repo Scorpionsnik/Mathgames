@@ -32,12 +32,12 @@ class ststart(QtWidgets.QMainWindow, start_win):
 		practice_style = """
 			QPushButton {
 				background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-									stop: 0 #11998e, stop: 1 #38ef7d);
+									stop: 0 #667eea, stop: 1 #764ba2);
 				color: white;
 				border: none;
-				border-radius: 20px;
-				padding: 25px 40px;
-				font-size: 28px;
+				border-radius: 10px;
+				padding: 20px 30px;
+				font-size: 20px;
 				font-weight: bold;
 				font-family: 'Segoe UI', Arial, sans-serif;
 				min-width: 300px;
@@ -45,15 +45,14 @@ class ststart(QtWidgets.QMainWindow, start_win):
 			}
 			QPushButton:hover {
 				background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-									stop: 0 #0f8a7f, stop: 1 #32d46b);
+									stop: 0 #5a6fd8, stop: 1 #6a4190);
 			}
 			QPushButton:pressed {
 				background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-									stop: 0 #0d7b70, stop: 1 #2cc159);
+									stop: 0 #4c5bc4, stop: 1 #5c377e);
 				padding: 26px 41px 24px 39px;
 			}
 		"""
-		
 		# Красный стиль для кнопки "Назад" (как "Выход")
 		exit_style = """
 			QPushButton {
@@ -61,9 +60,9 @@ class ststart(QtWidgets.QMainWindow, start_win):
 									stop: 0 #ff9a9e, stop: 1 #fad0c4);
 				color: #333;
 				border: none;
-				border-radius: 20px;
-				padding: 25px 40px;
-				font-size: 28px;
+				border-radius: 10px;
+				padding: 20px 30px;
+				font-size: 20px;
 				font-weight: bold;
 				font-family: 'Segoe UI', Arial, sans-serif;
 				min-width: 300px;
@@ -84,12 +83,12 @@ class ststart(QtWidgets.QMainWindow, start_win):
 		main_style = """
 			QPushButton {
 				background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-									stop: 0 #667eea, stop: 1 #764ba2);
+									stop: 0 #11998e, stop: 1 #38ef7d);
 				color: white;
 				border: none;
-				border-radius: 20px;
-				padding: 25px 40px;
-				font-size: 28px;
+				border-radius: 10px;
+				padding: 20px 30px;
+				font-size: 20px;
 				font-weight: bold;
 				font-family: 'Segoe UI', Arial, sans-serif;
 				min-width: 300px;
@@ -97,11 +96,11 @@ class ststart(QtWidgets.QMainWindow, start_win):
 			}
 			QPushButton:hover {
 				background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-									stop: 0 #5a6fd8, stop: 1 #6a4190);
+									stop: 0 #0f8a7f, stop: 1 #32d46b);
 			}
 			QPushButton:pressed {
 				background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-									stop: 0 #4c5bc4, stop: 1 #5c377e);
+									stop: 0 #0d7b70, stop: 1 #2cc159);
 				padding: 26px 41px 24px 39px;
 			}
 		"""

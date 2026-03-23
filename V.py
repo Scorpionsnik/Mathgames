@@ -76,7 +76,7 @@ class Voskl(object):
         self.pushButton_2.setText(_translate("MainWindow", "НАЗАД"))
         self.pushButton.setText(_translate("MainWindow", "Сброс\n"
 "настроек"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">MathsGames</p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">MathGames</p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">v 2.1.36</p></body></html>"))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">@Scorpionsnik</p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Если у Вас возникли проблемы </p><p align=\"center\">при использовании данного приложения, </p><p align=\"center\">пожалуйста обратитесь в тех. поддержку</p><p align=\"center\">по адресу </p><p align=\"center\">knite1@internet.ru</p></body></html>"))

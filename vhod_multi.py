@@ -31,7 +31,7 @@ class vhod_multi(QtWidgets.QMainWindow, Ui_MainWindow_vhod_2):
 		
 		# Создаем независимое окно
 		self.current_child_window = window_class(parent=None)
-		self.current_child_window.setWindowFlags(QtCore.Qt.Window)
+		# self.current_child_window.setWindowFlags(QtCore.Qt.Window)
 		
 		self.current_child_window.show()
 		# Главное окно остается открытым

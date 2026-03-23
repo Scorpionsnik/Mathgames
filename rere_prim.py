@@ -11,6 +11,8 @@ class proba_prohozhdeniya(QtWidgets.QMainWindow, Ui_mainwindow_1):
 	def __init__(self, dannie, parent=None):
 		super().__init__(parent)
 		self.setupUi(self)
+		self.label_5.hide()
+		self.label_4.hide()
 		self.parent = parent
 		self.dannie = dannie
 		self.showFullScreen()

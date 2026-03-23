@@ -10,8 +10,10 @@ class Sozd_uchitel(QtWidgets.QMainWindow, Sozd_uch):
 		super().__init__(parent)
 		self.setupUi(self)
 		self.parent_window = parent
-		self.label_5.setText(f'''<html><head/><body><p align="right"> {num_uch} </p></body></html>''')
-		self.label_6.setText(f'''<html><head/><body><p align="left"> {vsego_uch} </p></body></html>''')
+		self.num_uch = num_uch
+		self.vsego_uch = vsego_uch
+		self.label_5.setText(f'''<html><head/><body><p align="right"> {self.num_uch} </p></body></html>''')
+		self.label_6.setText(f'''<html><head/><body><p align="left"> {self.vsego_uch} </p></body></html>''')
 		self.label_8.hide()
 		self.label_9.hide()
 		self.pushButton.clicked.connect(self.next)
@@ -80,6 +82,8 @@ class Sozd_uchitel(QtWidgets.QMainWindow, Sozd_uch):
 		except Exception as e:
 			self.label_8.setText(f"Ошибка: {e}")
 			self.label_8.show()
+		if self.num_uch == self.vsego_uch:
+			QtWidgets.QApplication.instance().quit()
 
 	def closeEvent(self, event):
 		if self.parent_window:

@@ -12,6 +12,7 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
     def __init__(self, rezh, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.label_5.hide()
         self.parent = parent
         self.re = rezh
         self.label_4.hide()
@@ -20,11 +21,9 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
         self.pushButton.clicked.connect(self.prov_resh)
         self.pushButton_4.clicked.connect(self.start)
         
-        # Инициализация счетчиков
         self.correct_answers = 0
         self.total_attempts = 0
         
-        # Скрываем ненужные элементы для режима тренировки
         self.label_3.hide()
         self.pushButton_4.show()
         
@@ -33,12 +32,7 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
     def start(self):
         generator = EquationGenerator()
         self.lineEdit.clear()
-        self.lineEdit.setFocus()
-        
-        # Скрываем сообщение о результате
-        
-        
-        # Генерируем уравнение
+        self.lineEdit.setFocus() 
         self.rezh = self.re
         equation, steps, answer = generator.generate_from_extended_mode(self.rezh)
         self.answer = answer
@@ -48,7 +42,6 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
     def prov_resh(self):
         otvet = self.lineEdit.text()
         
-        # Более надежная проверка на число
         try:
             otvet = int(otvet)
         except ValueError:
@@ -65,11 +58,8 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
         else:
             self.show_message(f'!НЕВЕРНО! Правильный ответ: {self.answer}', '#e74c3c')
         self.start()
-        # Показываем статистику
-        # self.show_statistics()
 
     def show_message(self, text, color):
-        """Универсальная функция для показа сообщений"""
         self.label_3.show()
         self.label_3.setText(text)
         self.label_3.setStyleSheet(f"""
@@ -83,12 +73,6 @@ class primer(QtWidgets.QMainWindow, Ui_mainwindow_1):
             }}
         """)
 
-    # def show_statistics(self):
-        # """Показывает статистику правильных ответов"""
-        # if self.total_attempts > 0:
-            # accuracy = (self.correct_answers / self.total_attempts) * 100
-            # stats_text = f"Правильно: {self.correct_answers}/{self.total_attempts} ({accuracy:.1f}%)"
-            # print(stats_text)
 
     def exit(self):
         if self.parent:

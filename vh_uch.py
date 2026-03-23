@@ -11,8 +11,9 @@ class Vhod_uchit(QtWidgets.QMainWindow, vhod_uch):
 		super().__init__(parent)
 		self.setupUi(self)
 		self.parent = parent
+		parent.hide()
 		self.label_4.hide()
-		self.pushButton_2.clicked.connect(self.on_back)
+		self.pushButton_2.clicked.connect(lambda: self.on_back(parent))
 		self.pushButton.clicked.connect(self.prov_parol)
 		
 		# Правильные флаги для отдельного окна в панели задач
@@ -38,12 +39,17 @@ class Vhod_uchit(QtWidgets.QMainWindow, vhod_uch):
 				self.lineEdit.clear()
 				self.lineEdit_2.clear()
 
-	def on_back(self):
-		# print("a")
-		QtWidgets.QApplication.instance().quit()
+	def on_back(self, parent):
+		self.close()
+		parent.close()
 
 	def close_child_window(self):
 		"""Закрывает дочерние окна (например, окно учителя)"""
 		if hasattr(self, 'a') and self.a:
 			self.a.close()
 			self.a = None
+
+	def closeEvent(self, event):
+		self.parent.close()
+		event.accept()
+

@@ -30,7 +30,7 @@ class zag3(QtWidgets.QMainWindow, no_zaag):
 
 	def open_vh_adm(self):
 		"""Открывает окно проверки пароля администратора"""
-		self.vh_adm_window = Vh_Adm()
+		self.vh_adm_window = Vh_Adm(parent = self)
 		self.vh_adm_window.show()
 		self.hide()
 

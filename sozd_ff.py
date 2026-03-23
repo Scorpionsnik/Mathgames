@@ -39,10 +39,11 @@ class Sozd_new_class(QtWidgets.QMainWindow, Sozd_f):
 				self.make_ini_zagr_f_ok()
 				current_dir = os.path.dirname(os.path.realpath(__file__))
 				path_start_file = os.path.join(os.path.join(current_dir, 'Data'), 'vse.db')
-				new_path_file = os.path.join(os.path.join(current_dir, 'SourceBackup'), 'vse.db')
+				new_path_file = os.path.join(os.path.join(current_dir,'SourceBackup'), 'vse.db')
 				os.makedirs(os.path.dirname(new_path_file), exist_ok=True)
 				shutil.copy2(path_start_file, new_path_file)
-				self.close()
+				# self.close()
+				# QtWidgets.QApplication.instance().quit()
 
 			except ValueError:
 				self.label_2.show()
