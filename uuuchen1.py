@@ -34,14 +34,13 @@ class uuuchenik1(QtWidgets.QMainWindow, uchen1):
 		self.close()
 
 	def close_child_window(self):
-		"""Закрывает дочерние окна"""
 		if self.analitic_window:
 			self.analitic_window.close()
 			self.analitic_window = None
 		if self.st_window:
 			self.st_window.close()
 			self.st_window = None
-		self.show()  # Показываем это окно снова
+		self.show()
 
 	def closeEvent(self, event):
 		if self.analitic_window:
