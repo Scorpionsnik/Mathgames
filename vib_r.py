@@ -147,28 +147,26 @@ class viberr_rezhh(QtWidgets.QMainWindow, Ui_MainWindow):
         
         return first_digit * 10 + zeros_count
 
-    def test_equation_generation(self, extended_mode):
-        """
-        Тестирует генерацию уравнения с заданными настройками
-        """
-        try:
-            generator = EquationGenerator()
+    # def test_equation_generation(self, extended_mode):
+
+    #     try:
+    #         generator = EquationGenerator()
             
-            # Декодируем настройки для проверки
-            config = generator.decode_extended_mode(extended_mode)
-            print("=== ТЕСТ ГЕНЕРАЦИИ УРАВНЕНИЯ ===")
-            print(f"Конфигурация: {config}")
+    #         # Декодируем настройки для проверки
+    #         config = generator.decode_extended_mode(extended_mode)
+    #         print("=== ТЕСТ ГЕНЕРАЦИИ УРАВНЕНИЯ ===")
+    #         print(f"Конфигурация: {config}")
             
-            # Генерируем пример уравнения
-            equation, steps, answer = generator.generate_from_extended_mode(extended_mode)
+    #         # Генерируем пример уравнения
+    #         equation, steps, answer = generator.generate_from_extended_mode(extended_mode)
             
-            print(f"Уравнение: {equation}")
-            print(f"Ответ: {answer}")
-            print(f"Шаги решения:\n{steps}")
-            print("=" * 50)
+    #         print(f"Уравнение: {equation}")
+    #         print(f"Ответ: {answer}")
+    #         print(f"Шаги решения:\n{steps}")
+    #         print("=" * 50)
             
-        except Exception as e:
-            print(f"Ошибка при тестировании генерации: {e}")
+    #     except Exception as e:
+    #         print(f"Ошибка при тестировании генерации: {e}")
 
     def exit(self):
         if self.parent_window:
@@ -176,9 +174,6 @@ class viberr_rezhh(QtWidgets.QMainWindow, Ui_MainWindow):
         self.close()
 
     def get_current_params(self):
-        """
-        Получает текущие параметры из интерфейса
-        """
         index1 = self.comboBox_3.currentIndex()
         index3 = self.comboBox_4.currentIndex()
         params = {'actions_count': (index3 + 1)}

@@ -40,21 +40,24 @@ class proba_prohozhdeniya(QtWidgets.QMainWindow, Ui_mainwindow_1):
 		try:
 			otvet = int(otvet)
 		except:
-			self.label_3.show()
-			self.lineEdit.setFocus()
-			self.lineEdit.clear()
-			self.label_3.setText('!НЕ ЧИСЛО!')
-			self.label_3.setStyleSheet("""
-				QLabel {
-					background-color: transparent;
-					color: #3498db;
-					font-size: 25px;
-					font-weight: bold;
-					border: none;
-					text-align: center;
-				}
-			""")
-			return
+			try:
+				otvet = float(otvet)
+			except:
+				self.label_3.show()
+				self.lineEdit.setFocus()
+				self.lineEdit.clear()
+				self.label_3.setText('!НЕ ЧИСЛО!')
+				self.label_3.setStyleSheet("""
+					QLabel {
+						background-color: transparent;
+						color: #3498db;
+						font-size: 25px;
+						font-weight: bold;
+						border: none;
+						text-align: center;
+					}
+				""")
+				return
 		if otvet == self.answer:
 			self.lineEdit.setFocus()
 			self.label_3.show()

@@ -92,10 +92,13 @@ class pr_na_ocenku(QtWidgets.QMainWindow, Ui_mainwindow_1):
 		try:
 			otvet = int(otvet)
 		except ValueError:
-			self.show_message('!НЕ ЧИСЛО! Введите число', '#3498db')
-			self.lineEdit.clear()
-			self.lineEdit.setFocus()  # Фокус остается в поле ввода
-			return None  # Специальное значение для "не число"
+			try:
+				otvet = float(otvet)
+			except:
+				self.show_message('!НЕ ЧИСЛО! Введите число', '#3498db')
+				self.lineEdit.clear()
+				self.lineEdit.setFocus()  # Фокус остается в поле ввода
+				return None  # Специальное значение для "не число"
 		
 		if otvet == self.answer:
 			self.show_message('!ВЕРНО!', '#2ecc71')
