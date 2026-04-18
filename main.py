@@ -36,8 +36,11 @@ class main():
 
 	def find_zagr_file(self):
 		filename='start.ini'
-		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
+		# dir_path = ".\\"#<-получает путь к дириктории запуска
+		dir_path = ".\\"
 		path = os.path.join(os.path.join(dir_path, 'Data'),filename)#<-объединятет путь к директории запуска и имя файла
+		print(dir_path)
+		print(path)
 		if os.path.isfile(path):#<-проверка на существование файла
 			fileini=open(path,"r")#<-открытие файла на чтение
 
@@ -61,7 +64,8 @@ class main():
 			self.make_ini_start_file()
 
 	def make_ini_start_file(self):
-		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
+		# dir_path = ".\\"#<-получает путь к дириктории запуска
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 		if not os.path.exists(folder_path):
 			os.makedirs(folder_path)

@@ -28,7 +28,7 @@ class Hallo_class_class(QtWidgets.QMainWindow, Hallo_class):
 		# main_window.show()
 
 	def write_ini_start_file_1(self):
-		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 		filenameout='start.ini'
 		fout=open(os.path.join(os.path.join(dir_path, 'Data'),filenameout),"w")
@@ -37,7 +37,7 @@ class Hallo_class_class(QtWidgets.QMainWindow, Hallo_class):
 		self.state = 1
 
 	def make_ini_start_file(self, index):
-		dir_path = os.path.dirname(os.path.realpath(__file__))#<-получает путь к дириктории запуска
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 		if not os.path.exists(folder_path):
 			os.makedirs(folder_path)

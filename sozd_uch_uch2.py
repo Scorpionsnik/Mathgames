@@ -185,7 +185,7 @@ class sozd_new_class(QtWidgets.QMainWindow, Uch_sozd_2):
 
 	def backup_database(self):
 		try:
-			current_dir = os.path.dirname(os.path.realpath(__file__))
+			current_dir = ".\\"
 			source_path = os.path.join(os.path.join(current_dir, 'Data'), 'vse.db')
 			backup_path = os.path.join(os.path.join(current_dir, 'SourceBackup'), 'vse.db')
 			

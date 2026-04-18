@@ -37,7 +37,7 @@ class Sozd_new_class(QtWidgets.QMainWindow, Sozd_f):
 					teacher_window.show()
 
 				self.make_ini_zagr_f_ok()
-				current_dir = os.path.dirname(os.path.realpath(__file__))
+				current_dir = ".\\"
 				path_start_file = os.path.join(os.path.join(current_dir, 'Data'), 'vse.db')
 				new_path_file = os.path.join(os.path.join(current_dir,'SourceBackup'), 'vse.db')
 				os.makedirs(os.path.dirname(new_path_file), exist_ok=True)
@@ -64,7 +64,7 @@ class Sozd_new_class(QtWidgets.QMainWindow, Sozd_f):
 		event.accept()
 
 	def make_ini_zagr_f_ok(self):
-		dir_path = os.path.dirname(os.path.realpath(__file__))
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 
 		if not os.path.exists(folder_path):

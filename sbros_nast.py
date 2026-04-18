@@ -53,7 +53,7 @@ class Sbros_n(QtWidgets.QMainWindow, Vhod_Admin):
 			self.label_4.show()
 
 	def rest(self):
-		dir_path = os.path.dirname(os.path.realpath(__file__))
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 		folder_path_1 = os.path.join(dir_path, 'SourceBackup')
 		if os.path.exists(folder_path) and os.path.isdir(folder_path):

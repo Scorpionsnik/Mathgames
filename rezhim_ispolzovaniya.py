@@ -23,7 +23,7 @@ class opr_mod():
 
 	def read_mode(self):
 		filename='rezh_comp.ini'
-		dir_path = os.path.dirname(os.path.realpath(__file__))
+		dir_path = ".\\"
 		path = os.path.join(os.path.join(dir_path, 'Data'),filename)
 		if os.path.isfile(path):
 			fileini=open(path,"r")

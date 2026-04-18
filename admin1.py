@@ -272,7 +272,7 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 			
 	def sozdanie_backup(self):
 		try:
-			current_dir = os.path.dirname(os.path.realpath(__file__))
+			current_dir =".\\"
 			source_path = os.path.join(os.path.join(current_dir, 'Data'), 'vse.db')
 			backup_path = os.path.join(os.path.join(current_dir, 'SourceBackup'), 'vse.db')
 
@@ -297,7 +297,7 @@ class AdminWindow(QtWidgets.QMainWindow, admin_panel):
 				self.pokazat_status("Операция отменена", "orange")
 				return
 				
-			current_dir = os.path.dirname(os.path.realpath(__file__))
+			current_dir = ".\\"
 			source_path = os.path.join(os.path.join(current_dir, 'Data'), 'vse.db')
 
 			if not os.path.exists(source_path):

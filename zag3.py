@@ -64,7 +64,7 @@ class zag3(QtWidgets.QMainWindow, no_zaag):
 		if not path:
 			return
 	
-		current_dir = os.path.dirname(os.path.realpath(__file__))
+		current_dir = ".\\"
 		destination_dir = os.path.join(current_dir, 'Data')
 		source_backup_dir = os.path.join(current_dir, 'SourceBackup')
 		
@@ -108,7 +108,7 @@ class zag3(QtWidgets.QMainWindow, no_zaag):
 
 	def read_mode(self):
 		filename = 'sozd_zag.ini'
-		dir_path = os.path.dirname(os.path.realpath(__file__))
+		dir_path = ".\\"
 		path = os.path.join(os.path.join(dir_path, 'Data'), filename)
 		
 		if os.path.isfile(path):
@@ -123,7 +123,7 @@ class zag3(QtWidgets.QMainWindow, no_zaag):
 			self.make_ini_zagr_f()
 
 	def make_ini_zagr_f(self):
-		dir_path = os.path.dirname(os.path.realpath(__file__))
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 		if not os.path.exists(folder_path):
 			os.makedirs(folder_path)
@@ -147,7 +147,7 @@ class zag3(QtWidgets.QMainWindow, no_zaag):
 		self.show()
 
 	def make_ini_zagr_f_ok(self, path):
-		dir_path = os.path.dirname(os.path.realpath(__file__))
+		dir_path = ".\\"
 		folder_path = os.path.join(dir_path, 'Data')
 		if not os.path.exists(folder_path):
 			os.makedirs(folder_path)
