@@ -31,7 +31,7 @@ class uchen1(object):
 "QLabel {\n"
 "   background: transparent;\n"
 "   color: white;\n"
-"   font-family: \'Segoe UI\', Arial, sans-serif;\n"
+"   font-family: 'Segoe UI', Arial, sans-serif;\n"
 "}\n"
 "\n"
 "QLabel#label_title {\n"
@@ -63,7 +63,7 @@ class uchen1(object):
 "   padding: 25px 40px;\n"
 "   font-size: 28px;\n"
 "   font-weight: bold;\n"
-"   font-family: \'Segoe UI\', Arial, sans-serif;\n"
+"   font-family: 'Segoe UI', Arial, sans-serif;\n"
 "   min-width: 300px;\n"
 "   min-height: 90px;\n"
 "}\n"
@@ -108,6 +108,22 @@ class uchen1(object):
 "QPushButton#pushButton_stats:pressed {\n"
 "   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                        stop: 0 #d14949, stop: 1 #ff8484);\n"
+"   padding: 26px 41px 24px 39px;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_send_grades {\n"
+"   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                        stop: 0 #f093fb, stop: 1 #f5576c);\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_send_grades:hover {\n"
+"   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                        stop: 0 #e084e2, stop: 1 #e4495e);\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_send_grades:pressed {\n"
+"   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                        stop: 0 #d074d2, stop: 1 #d34053);\n"
 "   padding: 26px 41px 24px 39px;\n"
 "}\n"
 "\n"
@@ -163,14 +179,22 @@ class uchen1(object):
         self.verticalLayout_2.addWidget(self.pushButton_stats)
         spacerItem5 = QtWidgets.QSpacerItem(20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem5)
+        
+        # Новая кнопка для отправки оценок учителю
+        self.pushButton_send_grades = QtWidgets.QPushButton(self.frame_main)
+        self.pushButton_send_grades.setObjectName("pushButton_send_grades")
+        self.verticalLayout_2.addWidget(self.pushButton_send_grades)
+        
+        spacerItem6 = QtWidgets.QSpacerItem(20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem6)
         self.pushButton_exit = QtWidgets.QPushButton(self.frame_main)
         self.pushButton_exit.setObjectName("pushButton_exit")
         self.verticalLayout_2.addWidget(self.pushButton_exit)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 100, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_2.addItem(spacerItem6)
-        self.verticalLayout.addWidget(self.frame_main)
         spacerItem7 = QtWidgets.QSpacerItem(20, 100, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem7)
+        self.verticalLayout_2.addItem(spacerItem7)
+        self.verticalLayout.addWidget(self.frame_main)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 100, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem8)
         StudentMainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(StudentMainWindow)
@@ -183,4 +207,5 @@ class uchen1(object):
         self.label_welcome.setText(_translate("StudentMainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:32pt;\">Добро пожаловать, ученик!</span></p><p align=\"center\"><span style=\" font-size:28pt;\">Выберите действие:</span></p></body></html>"))
         self.pushButton_practice.setText(_translate("StudentMainWindow", "📚 Начать занятия"))
         self.pushButton_stats.setText(_translate("StudentMainWindow", "📊 Моя статистика"))
+        self.pushButton_send_grades.setText(_translate("StudentMainWindow", "📤 Отправить оценки учителю"))
         self.pushButton_exit.setText(_translate("StudentMainWindow", "🚪 Выход"))

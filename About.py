@@ -86,7 +86,7 @@ class Ui_MainWindow_About(object):
         self.label_3.setText(_translate("MainWindow", "@Scorpionsnik"))
         self.label_6.setText(_translate("MainWindow", "2025"))
         self.pushButton_2.setText(_translate("MainWindow", "назад"))
-        self.pushButton.setText(_translate("MainWindow", "Админ"))
+        self.pushButton.setText(_translate("MainWindow", "Администратор"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Mathgames</p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Сделано @Scorpionsnik</p></body></html>"))
         self.label_5.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Программа для ведения журнала и </p><p align=\"center\">проверки знаний по математике, </p><p align=\"center\">создана в учебных целях</p></body></html>"))

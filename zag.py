@@ -84,7 +84,7 @@ class zag(QtWidgets.QMainWindow, no_zaag):
 		
 		if not all_tables_exist:
 			self.label.setText("В данной заготовке нету всех необходимых для работы таблиц!")
-			self.label_6.setText("Обратитесь к админу для \nсоздания этих таблиц или \nсоздайте новую таблицу\n		 --->")
+			self.label_6.setText("Обратитесь к Администратору для \nсоздания этих таблиц или \nсоздайте новую таблицу\n		 --->")
 			return
 		
 		self.make_ini_zagr_f_ok(destination_path)

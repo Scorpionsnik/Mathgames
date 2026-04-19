@@ -33,7 +33,7 @@ class zag2(QtWidgets.QMainWindow, no_zaag):
 
 	def setup_connections(self):
 		self.label_5.hide()
-		self.label_6.setText("Обратись к учителю или админу за помощью")
+		self.label_6.setText("Обратись к учителю или Администратору за помощью")
 		self.pushButton_3.hide()
 		self.pushButton.hide()
 		# self.pushButton_3.clicked.connect(self.get_file_bd)
@@ -81,8 +81,8 @@ class zag2(QtWidgets.QMainWindow, no_zaag):
 				all_tables_exist = False
 		
 		if not all_tables_exist:
-			self.label.setText("В данной заготовке нету всех необходимых для работы таблиц!")
-			self.label_6.setText("Обратитесь к админу для \nсоздания этих таблиц или \nсоздайте новую таблицу\n		 --->")
+			self.label.setText("В данной базе данных нет всех необходимых для работы таблиц!")
+			self.label_6.setText("Обратитесь к Администратору для \nсоздания этих таблиц или \nсоздайте новую таблицу\n		 --->")
 			return
 		
 		self.make_ini_zagr_f_ok(destination_path)

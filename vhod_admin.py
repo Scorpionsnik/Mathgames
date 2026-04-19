@@ -103,9 +103,9 @@ class Vhod_Admin(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Вход в Админа"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Вход в учетную запись Администратора"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Вход</p></body></html>"))
-        self.label_3.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Введи пароль Админа:</p></body></html>"))
+        self.label_3.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Введите пароль Администратора:</p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Вход"))
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">Неверный логин или пароль</p></body></html>"))
         self.pushButton_2.setText(_translate("MainWindow", "выход"))

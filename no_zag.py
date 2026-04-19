@@ -116,11 +116,11 @@ class no_zaag(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Учитель"))
         self.label_3.setText(_translate("MainWindow", "@Scorpionsnik"))
         self.label_2.setText(_translate("MainWindow", "Mathgames  2.1.36"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">На данном компьютере не были созданы заготовки!</span></p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">На данном компьютере не была создана база данных!</span></p></body></html>"))
         self.pushButton_2.setText(_translate("MainWindow", "ВЫХОД"))
-        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt;\">Уже существует</span></p><p align=\"center\"><span style=\" font-size:10pt;\"> заготовка</span></p></body></html>"))
+        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt;\">Уже существует</span></p><p align=\"center\"><span style=\" font-size:10pt;\">база данных</span></p></body></html>"))
         self.pushButton_3.setText(_translate("MainWindow", "Скопировать\n"
-"заготовки"))
+"базу данных"))
         self.label_5.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt;\">Первый </span></p><p align=\"center\"><span style=\" font-size:10pt;\">компьютер</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Создать\n"
-"заготовки"))
+"базу данных"))

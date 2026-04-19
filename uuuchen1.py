@@ -3,6 +3,7 @@ import os
 
 from analiticcc_uchenik import Analitic_uchen
 from st import ststart
+from ssend import send
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ucenik1 import uchen1
@@ -17,6 +18,7 @@ class uuuchenik1(QtWidgets.QMainWindow, uchen1):
 		self.pushButton_exit.clicked.connect(self.exit)
 		self.pushButton_stats.clicked.connect(self.analitic_open)
 		self.pushButton_practice.clicked.connect(self.st_open)
+		self.pushButton_send_grades.clicked.connect(self.send)
 		self.analitic_window = None
 		self.st_window = None
 
@@ -27,6 +29,11 @@ class uuuchenik1(QtWidgets.QMainWindow, uchen1):
 
 	def analitic_open(self):
 		a = Analitic_uchen(self.dannie, parent = self)
+		a.show()
+		self.hide()
+
+	def send(self):
+		a = send(self.dannie, parent = self)
 		a.show()
 		self.hide()
 

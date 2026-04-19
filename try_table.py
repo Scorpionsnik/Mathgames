@@ -415,6 +415,219 @@ def get_student_grades(student_name):
 		print(f"Общая ошибка при получении оценок: {e}")
 		return []
 
+def get_student_all_grades(student_name):
+    try:
+        conn = sqlite3.connect('Data/vse.db')
+        cursor = conn.cursor()
+
+        class_name = find_student_in_classes(student_name)
+        if not class_name:
+            conn.close()
+            return []
+
+        # Получаем структуру таблицы
+        cursor.execute(f"PRAGMA table_info({class_name})")
+        columns = cursor.fetchall()
+        
+        # Собираем только колонки, начинающиеся с 'ocenka'
+        all_grade_columns = {}
+        for col in columns:
+            col_name = col[1]
+            if col_name.startswith('ocenka'):
+                # Извлекаем номер после 'ocenka'
+                num_part = col_name[6:]
+                if num_part.isdigit():
+                    all_grade_columns[int(num_part)] = col_name
+        
+        if not all_grade_columns:
+            conn.close()
+            return []
+        
+        # Определяем максимальный номер существующей колонки
+        max_number = max(all_grade_columns.keys())
+        
+        # Формируем список колонок для SELECT запроса (только те, что реально существуют)
+        existing_cols = [all_grade_columns[i] for i in sorted(all_grade_columns.keys())]
+        
+        # Получаем данные ученика
+        query = f"SELECT {', '.join(existing_cols)} FROM {class_name} WHERE name = ?"
+        cursor.execute(query, (student_name,))
+        row = cursor.fetchone()
+        
+        if not row:
+            conn.close()
+            return []
+        
+        # Создаём словарь номер -> значение только для существующих колонок
+        existing_values = {}
+        for i, num in enumerate(sorted(all_grade_columns.keys())):
+            existing_values[num] = row[i]
+        
+        # Формируем результат с пропусками от 0 до max_number
+        result = []
+        for i in range(max_number + 1):
+            if i in existing_values:
+                result.append(existing_values[i])
+            else:
+                result.append(None)
+        
+        conn.close()
+        return result
+        
+    except sqlite3.Error as e:
+        print(f"Ошибка базы данных при получении оценок: {e}")
+        return []
+    except Exception as e:
+        print(f"Общая ошибка при получении оценок: {e}")
+        return []
+
+def update_student_grades_from_position(student_name, new_grades_list):
+    """
+    Обновляет оценки ученика, начиная с позиции после последней существующей не-None оценки.
+    """
+    try:
+        # Преобразуем входные данные в список
+        # new_grades_list = parse_grades_string(new_grades_list)
+        
+        if not new_grades_list:
+            print("❌ Не удалось получить список оценок")
+            return False
+        
+        conn = sqlite3.connect('Data/vse.db')
+        cursor = conn.cursor()
+        
+        # Находим класс ученика
+        class_name = find_student_in_classes(student_name)
+        if not class_name:
+            print(f"❌ Ученик {student_name} не найден ни в одном классе")
+            conn.close()
+            return False
+        
+        # Получаем ID ученика
+        cursor.execute(f"SELECT id_uchenika FROM {class_name} WHERE name = ?", (student_name,))
+        student_id_row = cursor.fetchone()
+        if not student_id_row:
+            print(f"❌ Ученик {student_name} не найден в классе {class_name}")
+            conn.close()
+            return False
+        
+        student_id = student_id_row[0]
+        
+        # Получаем текущие оценки ученика из БД
+        cursor.execute(f"PRAGMA table_info({class_name})")
+        columns = cursor.fetchall()
+        
+        grade_columns = []
+        for col in columns:
+            col_name = col[1]
+            if col_name.startswith('ocenka') and col_name[6:].isdigit():
+                grade_columns.append(col_name)
+        
+        grade_columns.sort(key=lambda x: int(x[6:]))
+        
+        # Получаем текущие значения из БД
+        current_db_grades = []
+        for col in grade_columns:
+            cursor.execute(f"SELECT {col} FROM {class_name} WHERE id_uchenika = ?", (student_id,))
+            result = cursor.fetchone()
+            current_db_grades.append(result[0] if result else None)
+        
+        print(f"📊 Текущие оценки в БД: {current_db_grades}")
+        print(f"📥 Присланные оценки: {new_grades_list}")
+        
+        # Находим последнюю НЕ-None оценку в БД
+        last_non_none_db_index = -1
+        for i in range(len(current_db_grades) - 1, -1, -1):
+            if current_db_grades[i] is not None:
+                last_non_none_db_index = i
+                break
+        
+        print(f"📍 Индекс последней оценки в БД: {last_non_none_db_index}")
+        
+        # Находим соответствующий индекс в новом списке
+        # Ищем ту же последовательность оценок, игнорируя None в конце
+        db_trimmed = []
+        for grade in current_db_grades:
+            db_trimmed.append(grade)
+        
+        new_trimmed = []
+        for grade in new_grades_list:
+            new_trimmed.append(grade)
+        
+        # Находим, где заканчиваются общие данные
+        min_length = min(len(db_trimmed), len(new_trimmed))
+        
+        # Ищем первое различие или место где заканчиваются None
+        start_update_index = 0
+        
+        # Сначала проверяем - совпадают ли начала списков
+        for i in range(min_length):
+            if db_trimmed[i] != new_trimmed[i]:
+                # Нашли различие - начинаем обновление отсюда
+                start_update_index = i
+                break
+        else:
+            # Все элементы до min_length совпадают
+            if len(new_trimmed) > len(db_trimmed):
+                # Новый список длиннее - начинаем с конца старого
+                start_update_index = len(db_trimmed)
+            else:
+                # Списки одинаковые или новый короче - нечего обновлять
+                print(f"ℹ️ Списки идентичны, обновление не требуется")
+                conn.close()
+                return True
+        
+        print(f"➡️ Начинаем обновление с индекса: {start_update_index}")
+        
+        # Берем оценки для обновления
+        grades_to_update = new_grades_list[start_update_index:]
+        
+        print(f"➕ Оценки для добавления: {grades_to_update}")
+        
+        # Функция создания колонки
+        def ensure_column_exists(column_name):
+            try:
+                cursor.execute(f"ALTER TABLE {class_name} ADD COLUMN {column_name} INTEGER")
+                print(f"➕ Добавлена колонка {column_name}")
+                return True
+            except sqlite3.OperationalError as e:
+                if "duplicate column" in str(e):
+                    return True
+                else:
+                    raise e
+        
+        # Создаем нужные колонки
+        for i in range(len(grades_to_update)):
+            column_index = start_update_index + i
+            column_name = f"ocenka{column_index}"
+            ensure_column_exists(column_name)
+        
+        # Обновляем оценки
+        updated_count = 0
+        for i, grade_value in enumerate(grades_to_update):
+            column_index = start_update_index + i
+            column_name = f"ocenka{column_index}"
+            
+            # Записываем ВСЕ значения, включая None
+            cursor.execute(f"UPDATE {class_name} SET {column_name} = ? WHERE id_uchenika = ?", 
+                         (grade_value, student_id))
+            print(f"✏️ Обновлена {column_name} = {grade_value}")
+            updated_count += 1
+        
+        conn.commit()
+        conn.close()
+        
+        print(f"✅ Оценки ученика {student_name} успешно обновлены (обновлено {updated_count} позиций)")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Ошибка: {e}")
+        import traceback
+        traceback.print_exc()
+        if 'conn' in locals():
+            conn.close()
+        return False
+
 def get_student_statistics(student_name):
 	try:
 		conn = sqlite3.connect('Data/vse.db')
