@@ -162,7 +162,7 @@ class lload(QtWidgets.QMainWindow, Ui_Load):
         self.signals = FlaskSignals()
         self.signals.update_label.connect(self.label_5.setText)
         self.pushButton_2.clicked.connect(self.exit)
-        self.label_5.setText(self.get_local_ip())
+        self.label_5.setText(f"""<html><head/><body><p align="center">{self.get_local_ip()}</p></body></html>""")
         self.setWindowTitle("Приём оценок")
         self.show()
         self.parent=parent
