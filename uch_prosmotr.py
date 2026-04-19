@@ -365,14 +365,14 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
         conn = sqlite3.connect('Data/vse.db')
         cursor = conn.cursor()
         
+        # Получаем информацию о колонках
         cursor.execute(f"PRAGMA table_info({self.current_class})")
         columns = cursor.fetchall()
         
-        grade_columns = []
+        # Находим максимальный номер существующей колонки с оценкой
         max_grade_num = 0
         for col in columns:
             if col[1].startswith('ocenka'):
-                grade_columns.append(col[1])
                 try:
                     grade_num = int(col[1].replace('ocenka', ''))
                     if grade_num > max_grade_num:
@@ -380,50 +380,72 @@ class TeacherViewWindow(QtWidgets.QMainWindow, Uch4):
                 except ValueError:
                     continue
         
-        grade_columns.sort(key=lambda x: int(x.replace('ocenka', '')) if x.replace('ocenka', '').isdigit() else 0)
+        # Определяем количество отображаемых колонок (минимум 10, или больше если есть оценки с большими номерами)
+        visible_grades_count = max(10, max_grade_num)
         
+        # Получаем список учеников
         cursor.execute(f"SELECT id_uchenika, name FROM {self.current_class}")
         students = cursor.fetchall()
         
-        visible_columns_count = max(10, len(grade_columns) + 5)  
-        
+        # Настраиваем таблицу
+        total_columns = visible_grades_count + 2  # +2 для ID и Имени
         self.tableWidget_grades.setRowCount(len(students))
-        self.tableWidget_grades.setColumnCount(visible_columns_count)
+        self.tableWidget_grades.setColumnCount(total_columns)
         
+        # Формируем заголовки
         headers = ["ID", "Имя ученика"]
-        for i in range(1, visible_columns_count - 1):
+        for i in range(1, visible_grades_count + 1):
             headers.append(f"Оценка {i}")
-        
         self.tableWidget_grades.setHorizontalHeaderLabels(headers)
-
+        
+        # Заполняем таблицу
         for row, student in enumerate(students):
             student_id = student[0]
             student_name = student[1]
-
-            cursor.execute(f"SELECT {', '.join(grade_columns)} FROM {self.current_class} WHERE id_uchenika = ?", (student_id,))
-            grades = cursor.fetchone()
-
-            id_item = QtWidgets.QTableWidgetItem(str(student_id))
-            id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemIsEditable) 
-            self.tableWidget_grades.setItem(row, 0, id_item)
-
-            name_item = QtWidgets.QTableWidgetItem(student_name)
-            name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable) 
-            self.tableWidget_grades.setItem(row, 1, name_item)
-
-            if grades:
-                for col_idx, grade_value in enumerate(grades):
-                    table_col = col_idx + 2 
-                    
-                    if table_col < visible_columns_count:
-                        grade_text = str(grade_value) if grade_value is not None else ""
-                        grade_item = QtWidgets.QTableWidgetItem(grade_text)
-                        self.tableWidget_grades.setItem(row, table_col, grade_item)
             
-            for col in range(2, visible_columns_count):
-                if not self.tableWidget_grades.item(row, col):
+            # Колонка ID
+            id_item = QtWidgets.QTableWidgetItem(str(student_id))
+            id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemIsEditable)
+            self.tableWidget_grades.setItem(row, 0, id_item)
+            
+            # Колонка Имя
+            name_item = QtWidgets.QTableWidgetItem(student_name)
+            name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
+            self.tableWidget_grades.setItem(row, 1, name_item)
+            
+            # Получаем все оценки ученика
+            cursor.execute(f"SELECT * FROM {self.current_class} WHERE id_uchenika = ?", (student_id,))
+            student_data = cursor.fetchone()
+            
+            if student_data:
+                # Создаём словарь существующих оценок
+                grades_dict = {}
+                for col_idx, col in enumerate(columns):
+                    col_name = col[1]
+                    if col_name.startswith('ocenka'):
+                        try:
+                            grade_num = int(col_name.replace('ocenka', ''))
+                            grade_value = student_data[col_idx]
+                            if grade_value is not None:
+                                grades_dict[grade_num] = grade_value
+                        except (ValueError, IndexError):
+                            continue
+                
+                # Заполняем ячейки оценок по порядку номеров
+                for grade_num in range(1, visible_grades_count + 1):
+                    table_col = grade_num + 1  # +1 потому что 0=ID, 1=Имя, 2=Оценка1, 3=Оценка2...
+                    
+                    grade_value = grades_dict.get(grade_num, "")
+                    grade_text = str(grade_value) if grade_value != "" else ""
+                    
+                    grade_item = QtWidgets.QTableWidgetItem(grade_text)
+                    self.tableWidget_grades.setItem(row, table_col, grade_item)
+            else:
+                # Если данных нет, заполняем пустыми значениями
+                for grade_num in range(1, visible_grades_count + 1):
+                    table_col = grade_num + 1
                     empty_item = QtWidgets.QTableWidgetItem("")
-                    self.tableWidget_grades.setItem(row, col, empty_item)
+                    self.tableWidget_grades.setItem(row, table_col, empty_item)
         
         self.tableWidget_grades.resizeColumnsToContents()
         conn.close()
